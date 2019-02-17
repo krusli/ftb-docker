@@ -11,9 +11,9 @@ RUN mkdir -p /home/ftb && cd /home/ftb
 WORKDIR /home/ftb
 
 # download FTB Revelations server pack (latest)
-RUN wget http://ftb-latest-url.herokuapp.com -O url.txt && \
-    wget -i url.txt -O server.zip && \
-    unzip server.zip
+RUN wget -q http://ftb-latest-url.herokuapp.com -O url.txt && \
+    wget -q -i url.txt -O server.zip && \
+    unzip server.zip && rm server.zip
 
 # setup the server
 # make scripts executable
@@ -32,8 +32,8 @@ WORKDIR /home/ftb/mods
 RUN rm mcjtylib* && rm rftools-*
 
 # upgrade mods
-RUN wget http://ftb-latest-url.herokuapp.com/mods -O mods.txt && \
-    wget -i mods.txt
+RUN wget -q http://ftb-latest-url.herokuapp.com/mods -O mods.txt && \
+    wget -q -i mods.txt
 
 WORKDIR /home/ftb
 
