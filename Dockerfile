@@ -24,7 +24,8 @@ RUN echo "eula=TRUE" >> eula.txt
 
 # modify settings (no need garbage collector shenaningans)
 RUN echo 'export MIN_RAM="2048M"' >> settings.sh && \
-    echo 'export MAX_RAM="4096M"' >> settings.sh && \
+    echo 'export MAX_RAM="4096M"' >> settings.sh
+    # echo 'export MAX_RAM="4096M"' >> settings.sh && \
 #     echo 'export JAVA_PARAMETERS="-XX:+UseG1GC -XX:+UseStringDeduplication -XX:+DisableExplicitGC -XX:MaxGCPauseMillis=10 -XX:SoftRefLRUPolicyMSPerMB=10000 -XX:ParallelGCThreads=4"' >> settings.sh
 
 # clear out mods which we are upgrading
