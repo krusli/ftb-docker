@@ -3,7 +3,11 @@ FROM adoptopenjdk/openjdk8:alpine
 # NOTE ca-certificates:
 # https://hackernoon.com/alpine-docker-image-with-secured-communication-ssl-tls-go-restful-api-128eb6b54f1f
 RUN apk update && \
-    apk add ca-certificates wget
+    apk add ca-certificates wget openssh
+
+RUN rc-update add sshd && /etc/init.d/sshd start
+
+RUN echo "putpasswordhere" | passwd --stdin root 
 
 RUN mkdir -p /home/ftb && cd /home/ftb
 
