@@ -1,9 +1,13 @@
-FROM anapsix/alpine-java:8_server-jre
+FROM adoptopenjdk/openjdk8:alpine
 
 # NOTE ca-certificates:
 # https://hackernoon.com/alpine-docker-image-with-secured-communication-ssl-tls-go-restful-api-128eb6b54f1f
 RUN apk update && \
-    apk add ca-certificates wget
+    apk add ca-certificates wget openssh
+
+RUN rc-update add sshd && /etc/init.d/sshd start
+
+RUN echo "putpasswordhere" | passwd --stdin root 
 
 RUN mkdir -p /home/ftb && cd /home/ftb
 
@@ -11,7 +15,7 @@ RUN mkdir -p /home/ftb && cd /home/ftb
 WORKDIR /home/ftb
 
 # download FTB Revelations server pack (latest)
-RUN wget -q http://ftb-latest-url.herokuapp.com -O url.txt && \
+RUN wget -q http://ftb-zawarudo-build.herokuapp.com -O url.txt && \
     wget -q -i url.txt -O server.zip && \
     unzip server.zip && rm server.zip
 
@@ -32,7 +36,7 @@ WORKDIR /home/ftb/mods
 RUN rm mcjtylib* && rm rftools-*
 
 # upgrade mods
-RUN wget -q http://ftb-latest-url.herokuapp.com/mods -O mods.txt && \
+RUN wget -q http://ftb-zawarudo-build.herokuapp.com/mods -O mods.txt && \
     wget -q -i mods.txt
 
 WORKDIR /home/ftb
