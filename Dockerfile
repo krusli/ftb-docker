@@ -5,10 +5,6 @@ FROM adoptopenjdk/openjdk8:alpine
 RUN apk update && \
     apk add ca-certificates wget openssh
 
-RUN rc-update add sshd && /etc/init.d/sshd start
-
-RUN echo "putpasswordhere" | passwd --stdin root 
-
 RUN mkdir -p /home/ftb && cd /home/ftb
 
 # change directory to /home/ftb
