@@ -30,7 +30,7 @@ RUN echo 'export MIN_RAM="2048M"' >> settings.sh && \
 # clear out mods which we are upgrading
 WORKDIR /home/ftb/mods
 # RUN rm mcjtylib* && rm rftools-*  # deleting rftools NOT needed for Direwolf20, we are not upgrading their versions
-RUN rm mcjtylib*
+# RUN rm mcjtylib*
 
 # upgrade mods
 RUN wget -q http://ftb-latest-url.herokuapp.com/mods -O mods.txt && \
