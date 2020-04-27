@@ -13,7 +13,7 @@ WORKDIR /home/ftb
 # download FTB Revelations server pack (latest)
 RUN wget -q http://ftb-latest-url.herokuapp.com -O url.txt && \
     wget -q -i url.txt -O server.zip && \
-    unzip server.zip && rm server.zip
+    unzip -q server.zip && rm server.zip
 
 # setup the server
 # make scripts executable
@@ -41,6 +41,10 @@ WORKDIR /home/ftb
 RUN ./FTBInstall.sh
 RUN ./settings.sh
 EXPOSE 25565
+
+WORKDIR /home/ftb/config/AppliedEnergistics2
+# prevent conflict with Mahou Tsukai
+RUN sed -i 's/storageDimensionID=2/storageDimensionID=99/g' AppliedEnergistics2.cfg
 
 VOLUME /home/ftb/
 
