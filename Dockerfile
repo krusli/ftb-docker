@@ -10,14 +10,14 @@ RUN mkdir -p /home/ftb && cd /home/ftb
 # change directory to /home/ftb
 WORKDIR /home/ftb
 
-# download FTB Revelations server pack (latest)
-RUN wget -q http://ftb-latest-url.herokuapp.com -O url.txt && \
-    wget -q -i url.txt -O server.zip && \
-    unzip -q server.zip && rm server.zip
+# Copy modpack server files
+COPY SevTech-Ages_Server_3.1.5.zip server.zip
+RUN unzip -q server.zip && rm server.zip
 
 # setup the server
 # make scripts executable
-RUN chmod u+x FTBInstall.sh ServerStart.sh settings.sh
+# RUN chmod u+x FTBInstall.sh ServerStart.sh settings.sh
+RUN chmod u+x Install.sh ServerStart.sh settings.sh
 
 # agree to the EULA
 RUN echo "eula=TRUE" >> eula.txt
@@ -27,25 +27,15 @@ RUN echo 'export MIN_RAM="2048M"' >> settings.sh && \
     echo 'export MAX_RAM="4096M"' >> settings.sh && \
     echo 'export JAVA_PARAMETERS="-XX:+UseG1GC -XX:+UseStringDeduplication -XX:+DisableExplicitGC -XX:MaxGCPauseMillis=10 -XX:SoftRefLRUPolicyMSPerMB=10000 -XX:ParallelGCThreads=4"' >> settings.sh
 
-# clear out mods which we are upgrading
-WORKDIR /home/ftb/mods
-# RUN rm mcjtylib* && rm rftools-*  # deleting rftools NOT needed for Direwolf20, we are not upgrading their versions
-# RUN rm mcjtylib*
-
-# upgrade mods
-RUN wget -q http://ftb-latest-url.herokuapp.com/mods -O mods.txt && \
-    wget -q -i mods.txt
-
+# Setup FTB
 WORKDIR /home/ftb
-
-RUN ./FTBInstall.sh
+# RUN ./FTBInstall.sh
+RUN ./Install.sh
 RUN ./settings.sh
 EXPOSE 25565
 
-WORKDIR /home/ftb/config/AppliedEnergistics2
-# prevent conflict with Mahou Tsukai
-RUN sed -i 's/storageDimensionID=2/storageDimensionID=99/g' AppliedEnergistics2.cfg
-
+# Expose as volume to persist any changes from this point onwards
+# Also allows modifications
 VOLUME /home/ftb/
 
 CMD ./ServerStart.sh
